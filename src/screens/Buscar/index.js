@@ -22,7 +22,7 @@ export default function Buscar() {
         endpoint,
         {
           prompt: pergunta,
-          max_tokens: 50,
+          max_tokens: 100,
         },
         {
           headers: {
