@@ -1,7 +1,7 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Tab = createNativeStackNavigator();
+import { useAuth } from './hooks/auth'; // Importe o hook de autenticação
 
 import Cadastrar from './screens/Cadastrar';
 import Login from './screens/Login';
@@ -12,26 +12,33 @@ import Perfil from './screens/Perfil';
 import Plantas from './screens/Plantas';
 import Climas from './screens/Climas';
 import Milho from './screens/Milho';
-import Equatorial from './screens/Equatorial'
+import Equatorial from './screens/Equatorial';
+
+const Tab = createNativeStackNavigator();
 
 export default function routes() {
+  const { user } = useAuth(); // Use o hook de autenticação para verificar se o usuário está logado
 
   return (
     <NavigationContainer>
       <Tab.Navigator>
-      <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
-      <Tab.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
-      
-        
-        <Tab.Screen name="Cadastrar" component={Cadastrar} options={{ headerShown: false }} />
-         
-       <Tab.Screen name="Buscar" component={Buscar} options={{ headerShown: false }} />
-        <Tab.Screen name="Conta" component={Conta} options={{ headerShown: false }} />
-        <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
-        <Tab.Screen name="Plantas" component={Plantas} options={{ headerShown: false }} />
-        <Tab.Screen name="Climas" component={Climas} options={{ headerShown: false }} />
-        <Tab.Screen name="Milho" component={Milho} options={{ headerShown: false }} />
-        <Tab.Screen name="Equatorial" component={Equatorial} options={{ headerShown: false }} />
+        {user ? (
+          <>
+            <Tab.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
+            <Tab.Screen name="Buscar" component={Buscar} options={{ headerShown: false }} />
+            <Tab.Screen name="Conta" component={Conta} options={{ headerShown: false }} />
+            <Tab.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
+            <Tab.Screen name="Plantas" component={Plantas} options={{ headerShown: false }} />
+            <Tab.Screen name="Climas" component={Climas} options={{ headerShown: false }} />
+            <Tab.Screen name="Milho" component={Milho} options={{ headerShown: false }} />
+            <Tab.Screen name="Equatorial" component={Equatorial} options={{ headerShown: false }} />
+          </>
+        ) : (
+          <>
+            <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Tab.Screen name="Cadastrar" component={Cadastrar} options={{ headerShown: false }} />
+          </>
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );

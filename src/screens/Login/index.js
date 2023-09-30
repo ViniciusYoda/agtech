@@ -1,31 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Container, LogoContainer, Logo, InputContainer, CreateAccountText } from './styles';
 import logo from '../../assets/logo.png';
-import { LoginUsuario } from '../../services/Login';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logar } from '../../services/requisicoesFirebase'; // Importe a função de login
 
 export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  async function handleLogin() {
-    try{
-      const response=await LoginUsuario(email, senha)
-      console.log("Usuario", response)
-      navigation.navigate("Inicio")
-    } catch(error){
-      console.log("Erro", error)
-    }
-  }
+  // Função para lidar com o login
+  const handleLogin = async () => {
+    try {
+      // Chame a função "logar" da sua camada de serviços que interage com o Firebase
+      const resultado = await logar(email, senha);
 
-  function caminho(){
-    navigation.navigate("Inicio")
-  }
+      if (resultado === "sucesso") {
+        // O login foi bem-sucedido, você pode navegar para a próxima tela ou fazer algo mais
+        navigation.navigate('Inicio'); // Substitua 'TelaSeguinte' pelo nome da tela que você deseja navegar
+      } else {
+        // Trate o erro de login aqui
+        alert('Erro ao fazer login. Verifique suas credenciais.');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   function handleCreateAccount() {
     navigation.navigate('Cadastrar');

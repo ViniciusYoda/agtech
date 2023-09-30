@@ -1,32 +1,32 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Container, Center, Subtitle, InputSpacing } from './styles';
-import { CadastrarUsuario } from '../../services/Cadastro';
 import { useNavigation } from '@react-navigation/native';
+import { cadastrar } from '../../services/requisicoesFirebase';
 
 export default function Cadastrar() {
-
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  async function handleCadastro() {
+  // Função para lidar com o cadastro
+  const handleCadastro = async () => {
     try {
-      const response = await CadastrarUsuario(nome, cpf, email, senha);
-      console.log('Usuário cadastrado:', response);
-      navigation.navigate('Inicio');
+      // Chame a função "cadastrar" da sua camada de serviços que interage com o Firebase
+      await cadastrar(nome, cpf, email, senha);
+
+      // Cadastro bem-sucedido, você pode navegar para a próxima tela ou fazer algo mais
+      navigation.navigate('TelaSeguinte'); // Substitua 'TelaSeguinte' pelo nome da tela que você deseja navegar
     } catch (error) {
-      console.error('Erro ao cadastrar usuário:', error);
-
+      console.error(error);
+      // Trate os erros de cadastro aqui
     }
-  }
-
-  console.log(cpf)
+  };
 
   return (
     <Container>
